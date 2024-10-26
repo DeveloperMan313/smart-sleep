@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+         .button {
+      display: inline-block; /* Размещение как строчный элемент с блочными свойствами */
+      padding: 10px 20px; /* Отступы */
+      background-color: #4CAF50; /* Зеленый цвет */
+      color: white; /* Белый текст */
+      border: none; /* Без границы */
+      border-radius: 5px; /* Скругление углов */
+      cursor: pointer; /* Курсор указателя */
+      font-size: 16px; /* Размер шрифта */
+      text-decoration: none; /* Убрать подчеркивание */
+      margin: 0 10px; /* Отступы слева и справа */
+    }
+    .button-container {
+      display: flex; /* Размещение кнопок как flex-элементов */
+      justify-content: center; /* Выравнивание кнопок по центру */
+      margin-top: 40px; /* Вертикальный отступ */
+    }
+    .button:active{
+        background-color: #2196F3;
+    }
+        h1 {
+            color: white;
+            text-align: center;
+        }
+    </style>
+
+</head>
+
+<body style="background-image: url('фон.jpg'); background-repeat: no-repeat; background-size: cover;">
+    <h1 style="text-align: center;">Оцените ваше состояние</h1>
+    <div class="button-container">
+        <button class="button">1</button>
+        <button class="button">2</button>
+        <button class="button">3</button>
+        <button class="button">4</button>
+        <button class="button">5</button>
+        <button class="button">6</button>
+        <button class="button">7</button>
+        <button class="button">8</button>
+        <button class="button">9</button>
+         <button class="button">10</button>
+        </div>
+
+</body>
+
+</html>
