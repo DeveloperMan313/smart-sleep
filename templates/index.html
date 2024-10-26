@@ -3,15 +3,20 @@
 {% load static %}
 
 {% block content %}
-<div>
-    <h1>Будильники:</h1>
-</div>
+<span class="fs-1">Будильники:</span><a href="/add_alarm/"><img src="{% static 'icons/add.svg' %}" alt="add alarm"
+        class="ms-2" style="width: 2rem;"></a>
 
-<div>
+<div class="fs-4">
     <ol type="1">
-        <li><span>3:00 (пн-ср)</span></li>
-        <li><span>10:00 (пт)</span></li>
-        <li><span>7:45 (чт)</span></li>
+        {% for alarm in alarms %}
+        <li id="{{ alarm.id }}"><span>{{ alarm.time }} ({{ alarm.days }})</span><img src="{% static 'icons/edit.svg' %}"
+                alt="edit alarm" style="width: 2rem;">
+            <form action="/remove_alarm/" method="post" style="display: inline;"><input type="hidden" name="alarm_id"
+                    value="{{ alarm.id }}"><input type="submit" value="" id="alarm{{ alarm.id }}_remove"
+                    style="display: none;"><label for="alarm{{ alarm.id }}_remove"><img
+                        src="{% static 'icons/remove.svg' %}" alt="remove alarm" style="width: 2rem;"></label></form>
+        </li>
+        {% endfor %}
     </ol>
 </div>
 {% endblock %}

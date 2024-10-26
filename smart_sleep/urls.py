@@ -21,5 +21,7 @@ from app import views
 
 urlpatterns = [
     path('', views.index),
+    path('add_alarm/', views.add_alarm),
+    path('edit_alarm/<int:alarm_id>/', views.edit_alarm),
     path('admin/', admin.site.urls),
 ]

@@ -1,0 +1,22 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <input type="time" name="time" id="time" required value="{{ time }}" class="form-control"
+        style="width: min-content !important;">
+    <div>
+        {% for day in days %}
+        <input type="checkbox" name="day{{ day.n }}" id="day{{ day.n }}" {% if day.checked %}checked{% endif %}
+            class="form-check-input"><label for="day{{ day.n }}" class="form-label">{{ day.name }}</label>
+        {% endfor %}
+    </div>
+    <div>
+        <input type="number" name="n_repeats" id="n_repeats" required value="{{ n_repeats }}" min="0" max="5"
+            class="form-control" style="width: min-content !important;">
+    </div>
+    <input type="submit" value="Добавить" class="btn btn-primary">
+</form>
+{% endblock %}
