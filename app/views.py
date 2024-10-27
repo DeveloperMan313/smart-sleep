@@ -5,6 +5,7 @@ from copy import deepcopy
 from datetime import time
 from django.template.loader import render_to_string
 
+from app.database import *
 
 ALARMS = [
     {
@@ -34,7 +35,7 @@ def get_alarm_form_data(form: AlarmForm) -> tuple:
     return (alarm_time, alarm_days)
 
 
-def add_alarm(request: HttpRequest):
+def add_alarm1(request: HttpRequest):
     if request.method == 'GET':
         days = [{'n': i + 1, 'name': name} for i, name in enumerate(DAY_NAMES)]
         return render(request, 'edit_alarm.html', context={'n_repeats': 1, 'days': days})
@@ -63,3 +64,5 @@ def edit_alarm(request: HttpRequest, alarm_id: int):
             alarm_time, alarm_days = get_alarm_form_data(form)
             print(alarm_id, alarm_time, alarm_days)  # call to DB
         return redirect('/')
+
+add_latest_quality(7)
