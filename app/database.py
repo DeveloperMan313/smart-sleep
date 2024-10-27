@@ -175,3 +175,31 @@ def get_quality(day:int):
     for sleep in sleeps:
         result.append(sleep.sleep_quality)
     return result
+
+def delete_alarms(alarm_timetable_id: int):
+    timetable = Alarm_timetable.objects.get(id = alarm_timetable_id)
+    weekday_alarms = Alarm.objects.filter(alarm_timetable = alarm_timetable_id)
+    for day in weekday_alarms:
+        day.delete()
+
+def edit_alarm(alarm_id: int, alarm_time: int, alarm_days: int, reps: int):
+    timetable = Alarm_timetable.objects.get(id = alarm_id)
+    timetable.time = alarm_time
+    delete_alarms(alarm_id)
+    for day in alarm_days:
+        new_alarm = Alarm(alarm_timetable = timetable, weekday = day)
+        new_alarm.save()
+    timetable.repeat_times = reps
+    timetable.save()
+
+def delete_alarm_timetable(alarm_id):
+    timetable = Alarm_timetable.objects.get(id = alarm_id)
+    delete_alarms(alarm_id)
+    Timetable.delete()
+
+def get_alarm_id(weekday_: int):
+    if Alarm.objects.filter(weekday = weekday_).exists():
+        al = Alarm.objects.get(weekday = weekday_)
+        return al.id
+    else: 
+        return None
