@@ -17,7 +17,7 @@ class Timetable(models.Model):
     weekday = models.IntegerField()
     sleep_start = models.IntegerField()
     sleep_finish = models.IntegerField()
-    sleep_quality = models.IntegerField(default = NUll)
+    sleep_quality = models.IntegerField(default = None)
 
 class Alarm_timetable(models.Model):
     time = models.IntegerField()

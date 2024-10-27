@@ -1,0 +1,17 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<h1>Оцените качество своего сна</h1>
+<form method="post" class="fs-5">
+    {% csrf_token %}
+    <div class="d-flex align-items-center mb-2">
+        {% for rating in ratings %}
+        <input type="radio" name="rating" value="{{ rating }}" required id="id_rating{{ rating }}"
+            class="ms-3 me-1"><label for="id_rating{{ rating }}">{{ rating }}</label>
+        {% endfor %}
+    </div>
+    <input type="submit" value="Оценить" class="btn btn-primary">
+</form>
+{% endblock %}
