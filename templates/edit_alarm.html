@@ -1,0 +1,28 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<h1>{{ header }}</h1>
+<form method="post" class="fs-5">
+    {% csrf_token %}
+    <div class="mb-2">
+        <label for="time">Время</label>
+        <input type="time" name="time" id="time" required value="{{ time }}" class="form-control"
+            style="width: min-content !important;">
+    </div>
+    <div class="mb-2">
+        <p class="mb-0">Дни недели</p>
+        {% for day in days %}
+        <input type="checkbox" name="day{{ day.n }}" id="day{{ day.n }}" {% if day.checked %}checked{% endif %}
+            class="form-check-input"><label for="day{{ day.n }}" class="form-label ms-1 me-2">{{ day.name }}</label>
+        {% endfor %}
+    </div>
+    <div class="mb-3">
+        <label for="n_repeats">Число повторений</label>
+        <input type="number" name="n_repeats" id="n_repeats" required value="{{ n_repeats }}" min="0" max="5"
+            class="form-control" style="width: min-content !important;">
+    </div>
+    <input type="submit" value="Сохранить" class="btn btn-primary">
+</form>
+{% endblock %}

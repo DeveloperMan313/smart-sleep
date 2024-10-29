@@ -1,0 +1,18 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+
+{% block content %}
+{% if recommendation %}
+<h1>Рекомендации</h1>
+<p>{{ recommendation.issue }}</p>
+<h3>Попробуйте:</h3>
+<p>Ложитесь спать в {{ recommendation.time_start_opt }}</p>
+<p>или</p>
+<a href="/edit_alarm/{{ recommendation.alarm_id }}/">
+    <p>Измените время будильника на {{ recommendation.time_finish_opt }}</p>
+</a>
+{% else %}
+<h1>Все в порядке :)</h1>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'layouts/base.html' %}
+
+{% load static %}
+
+{% block content %}
+<p><a href="/recommendation/">Посмотреть рекомендации</a></p>
+<span class="fs-1">Будильники:</span><a href="/add_alarm/"><img src="{% static 'icons/add.svg' %}" alt="add alarm"
+        style="width: 2rem;"></a>
+<div class="fs-4">
+    <ol type="1">
+        {% for alarm in alarms %}
+        <li id="{{ alarm.id }}"><span>{{ alarm.time }} ({{ alarm.days }})</span><a
+                href="/edit_alarm/{{ alarm.id }}/"><img src="{% static 'icons/edit.svg' %}" alt="edit alarm"
+                    class="ms-2" style="width: 2rem;"></a><form action="/remove_alarm/{{ alarm.id }}/" method="post" style="display: inline;">{% csrf_token %}<input type="hidden" name="alarm_id"
+                    value="{{ alarm.id }}"><input type="submit" value="" id="alarm{{ alarm.id }}_remove"
+                    style="display: none;"><label for="alarm{{ alarm.id }}_remove"><img
+                        src="{% static 'icons/remove.svg' %}" alt="remove alarm" class="ms-2" style="width: 2rem; cursor: pointer;"></label></form>
+        </li>
+        {% endfor %}
+    </ol>
+</div>
+{% endblock %}
