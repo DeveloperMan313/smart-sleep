@@ -22,9 +22,11 @@ from app import views
 urlpatterns = [
     path('register/', views.register),
     path('login/', views.login),
+    path('logout/', views.logout),
     path('', views.index),
     path('add_alarm/', views.add_alarm),
     path('edit_alarm/<int:alarm_id>/', views.edit_alarm),
+    path('remove_alarm/<int:alarm_id>/', views.remove_alarm),
     path('rate/', views.rate),
     path('recommendation/', views.recommendation),
     path('admin/', admin.site.urls),

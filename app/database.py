@@ -46,7 +46,7 @@ def add_sleep(day, start_time):
     new_sleep = Timetable(weekday = day, sleep_start = start_time, sleep_finish = weekday_alarm.alarm_timetable.time)
     new_sleep.save()
 
-    cut = 0
+    cut = 2
     if cut != 0 and get_weekday_sleep(day) >= optimal_time - 15 and get_weekday_sleep(day) <= optimal_time + 15:
         number=func_type_get_date(get_quality(day)[-1])
         match (number):
@@ -66,7 +66,7 @@ def add_sleep(day, start_time):
         elif x==1:
             func_first_event(get_weekday_sleep(day)[50*k+1:], optimal_time_sleep, number)
         elif x==2:
-            func_second_event(get_weekday_sleep(day)[50*k+1], get_quality(day)[-1], optimal_time,get_quality(50*k+25),get_quality(day))
+            func_second_event(get_weekday_sleep(day)[50*k+1], get_quality(day)[-1], optimal_time,get_quality(dat)[50*k+25],get_quality(day)[-1])
 
 def func_first_event (time_sleep, optimal_time_sleep, average_gradue_time_sleep):
 
@@ -77,27 +77,26 @@ def func_first_event (time_sleep, optimal_time_sleep, average_gradue_time_sleep)
 
         summ_time_sleep+= time_sleep[i]
     average_time_sleep = summ_time_sleep/len(time_sleep)
-    print(average_time_sleep)
+    
     if average_time_sleep>=optimal_time_sleep-15 and average_time_sleep<=optimal_time_sleep+15 and average_gradue_time_sleep>=8:
-        print("good")
         return 1
     elif average_time_sleep>=optimal_time_sleep-15 and average_time_sleep<=optimal_time_sleep+15 and average_gradue_time_sleep <5:
-        print("bad")
+        
         return 3
     elif average_time_sleep>=optimal_time_sleep-15 and average_time_sleep<=optimal_time_sleep+15 and 5<= average_gradue_time_sleep <8:
-        print("nbad")
+        
         return 2
     elif (average_time_sleep<optimal_time_sleep-15 or average_time_sleep>optimal_time_sleep+15) and average_gradue_time_sleep>=8:
         answer = int(input("изменть будильник?(1/0)"))
         if answer==0:
-            print('gbj')
+            
             return 2
         else:
             optimal_time_sleep = average_time_sleep
-            print(optimal_time_sleep)
+            
             return 2
     elif (average_time_sleep<optimal_time_sleep-15 or average_time_sleep>optimal_time_sleep+15) and average_gradue_time_sleep<8:
-        print("спи нормально")
+        
         return 3
     
     #функция второго случая
@@ -121,11 +120,11 @@ def func_second_event(time_sleep, gradue_optimal_time_sleep,optimal_time_sleep,a
         return 3
     elif (average_time_sleep<optimal_time_sleep-15 or average_time_sleep>optimal_time_sleep+15) and average_gradue_time_sleep>=8:
         optimal_time_sleep = average_time_sleep
-        print(optimal_time_sleep)
+        
         return 1
     elif (average_time_sleep < optimal_time_sleep - 15 or average_time_sleep > optimal_time_sleep + 15) and gradue_optimal_time_sleep<=average_gradue_time_sleep <8:
         optimal_time_sleep = average_time_sleep
-        print(optimal_time_sleep)
+        
         return 2
     elif (average_time_sleep < optimal_time_sleep - 15 or average_time_sleep > optimal_time_sleep + 15) and average_gradue_time_sleep < gradue_optimal_time_sleep:
         return 3
@@ -143,6 +142,8 @@ def func_type_get_date ( gradue_optimal_time_sleep):
 def optimal_time_sleep(weekday):
     time_sleep = get_weekday_sleep(weekday)
     request = get_quality(weekday)
+    if len(request) == 0:
+        return 0
     if (request.index(max(request)) == time_sleep.index(max(time_sleep)) and request.count(max(request)) == 1):
         k = max(request) / 10  # большой шаг в час
         optimal_time_sleep = time_sleep[time_sleep.index(max(time_sleep))] / k
@@ -151,7 +152,7 @@ def optimal_time_sleep(weekday):
         optimal_time_sleep = time_sleep[time_sleep.index(min(time_sleep))] * k
     else:
         x = 0
-        for i in range(0, len(time_sleep)):
+        for i in range(len(time_sleep)):
             x += (time_sleep[i] * request[i])
         optimal_time_sleep = x / sum(request)
 
@@ -168,6 +169,11 @@ def get_weekday_sleep(day:int):
         result.append(x)
     return result
 
+def time_sleep(result):
+    if len(result) == 0:
+        return 0
+    return sum(result)/len(result)
+
 def get_quality(day:int):
     result = []
     Timetable.objects.all()
@@ -175,6 +181,11 @@ def get_quality(day:int):
     for sleep in sleeps:
         result.append(sleep.sleep_quality)
     return result
+
+
+def get_user_analitic(weekday: int):
+    return (int(time_sleep(get_weekday_sleep(weekday))), int(optimal_time_sleep(weekday)), int(get_alarm_id(weekday)))
+
 
 def delete_alarms(alarm_timetable_id: int):
     timetable = Alarm_timetable.objects.get(id = alarm_timetable_id)
@@ -195,11 +206,11 @@ def edit_alarm(alarm_id: int, alarm_time: int, alarm_days: int, reps: int):
 def delete_alarm_timetable(alarm_id):
     timetable = Alarm_timetable.objects.get(id = alarm_id)
     delete_alarms(alarm_id)
-    Timetable.delete()
+    timetable.delete()
 
 def get_alarm_id(weekday_: int):
     if Alarm.objects.filter(weekday = weekday_).exists():
         al = Alarm.objects.get(weekday = weekday_)
-        return al.id
+        return al.alarm_timetable.id
     else: 
         return None
